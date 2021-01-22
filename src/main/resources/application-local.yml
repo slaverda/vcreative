@@ -1,0 +1,54 @@
+server:
+  port: 8080
+
+api:
+  path: /api/vcreative
+
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+    health:
+      show-details: never
+  endpoints:
+    web:
+      base-path: ${api.path}
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: ${api.path}/docs/latest
+
+spring:
+  application:
+    name: vcreative-api
+  jackson:
+    default-property-inclusion: NON_NULL
+    visibility:
+      field: any
+      getter: none
+      setter: none
+      is-getter: none
+  mvc:
+    throw-exception-if-no-handler-found: true
+  datasource:
+    host: localhost
+    port: 5436
+    db: master
+    url: jdbc:postgresql://${spring.datasource.host}:${spring.datasource.port}/${spring.datasource.db}?stringtype=unspecified
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: false
+    generate-ddl: false
+
