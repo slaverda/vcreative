@@ -35,4 +35,4 @@ jobs:
 
     - name: Push docker images
       run: |
-        docker push ghcr.io/myimage/loadbalancer:latest
+        docker push sands/vcreative/vcreative-core:latest
