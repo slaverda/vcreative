@@ -22,14 +22,17 @@ jobs:
 
     - name: Build with Maven
       run: mvn clean install
-
-    - name: Check out the repo
-      uses: actions/checkout@v2
-    - name: Push to GitHub Packages
-      uses: docker/build-push-action@v2
+        
+    - name: Login to GitHub Registry Container
+      uses: docker/login-action@v1
       with:
+        registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-        registry: docker.pkg.github.com
-        repository: sands/vcreative/vcreative-core        
-        tag_with_ref: true
+
+    - name: Create docker vcreative-core image
+      run: docker build -t sands/vcreative/vcreative-core:latest .
+
+    - name: Push docker images
+      run: |
+        docker push sands/vcreative/vcreative-core:latest
