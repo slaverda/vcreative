@@ -5,7 +5,7 @@ VOLUME /tmp
 ARG JAR_FILE=/target/root.jar
 
 # Add the application's jar to the container
-ADD ${JAR_FILE} root.jar
+COPY ${JAR_FILE} root.jar
 
 # Run the jar file
 ENTRYPOINT [ \
