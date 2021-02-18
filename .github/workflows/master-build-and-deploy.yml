@@ -41,8 +41,7 @@ jobs:
     - name: Start container 
       uses: garygrossgarten/github-action-ssh@v0.6.3
       with:
-        command:  docker login --username slaveda --password ${{ secrets.DOKERHUB_TOKEN }} 
-                  && docker pull slaveda/vcreative-core && docker run -d -p 8081:8080 slaveda/vcreative-core
+        command:  docker login --username slaveda --password ${{ secrets.DOKERHUB_TOKEN }} && docker pull slaveda/vcreative-core && docker run -d -p 8081:8080 slaveda/vcreative-core
         host: ${{ secrets.SSH_HOST }}
         port: ${{ secrets.SSH_PORT }}
         username: ${{ secrets.SSH_USER }}
