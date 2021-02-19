@@ -38,10 +38,20 @@ jobs:
         context: .
         push: true
         tags: slaveda/vcreative-core:latest
+        
+    - name: Remove old containers and images
+      uses: garygrossgarten/github-action-ssh@v0.6.3
+      with:
+        command:  docker stop vcreative-core && docker container rm vcreative-core && docker image rm slaveda/vcreative-core
+        host: ${{ secrets.SSH_HOST }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SSH_USER }}
+        password: ${{ secrets.PASSWORD }}
+        
     - name: Start container 
       uses: garygrossgarten/github-action-ssh@v0.6.3
       with:
-        command:  docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }} && docker pull slaveda/vcreative-core && docker run -d -p 8081:8080 slaveda/vcreative-core
+        command:  docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }} && docker pull slaveda/vcreative-core && docker run --name vcreative-core -d -p 8081:8080 slaveda/vcreative-core
         host: ${{ secrets.SSH_HOST }}
         port: ${{ secrets.SSH_PORT }}
         username: ${{ secrets.SSH_USER }}
