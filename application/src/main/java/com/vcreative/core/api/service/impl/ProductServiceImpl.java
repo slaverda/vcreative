@@ -4,19 +4,20 @@ import com.sands.vcreative.model.PaginatedHeader;
 import com.sands.vcreative.model.ProductFull;
 import com.sands.vcreative.model.ProductPaginatedList;
 import com.vcreative.core.api.model.Product;
+import com.vcreative.core.api.model.dto.SimplePageRequest;
 import com.vcreative.core.api.repository.ProductRepository;
 import com.vcreative.core.api.service.ProductService;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 /**
  * Service that handles {@code Product} related functionality
@@ -52,21 +53,14 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findProductById(id).map(product -> modelMapper
                 .map(product, ProductFull.class));
     }
-    
-    /**
-     * Gets Product by a given Product Name
-     *
-     * @param name Product Name
-     * @param pageable Pagination information
-     *
-     * @return a Page of Products
-     */
-    public ProductPaginatedList getProductByName(final String name, final Pageable pageable) {
+
+    public ProductPaginatedList getAllProducts(final SimplePageRequest simplePageRequest) {
         Page<Product> page = null;
-        if (name != null && !name.isBlank()) {
-            page = productRepository.findProductByNameContaining(name.toUpperCase(Locale.ROOT), pageable);
+        if (simplePageRequest.getPageNumber() == 0 && simplePageRequest.getPageSize() == Integer.MAX_VALUE) {
+            page = productRepository.findAll(PageRequest.of(0, 10));
         } else {
-            page = productRepository.findAll(pageable);
+            page = productRepository.findAll(PageRequest.of(simplePageRequest.getPageNumber(),
+                                                            simplePageRequest.getPageSize()));
         }
 
         PaginatedHeader paginatedHeader = new PaginatedHeader();

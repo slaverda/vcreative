@@ -8,19 +8,13 @@ tags:
 - name: product-controller
   description: Product Controller
 paths:
-  /api/vcreative/product:
+  /api/vcreative/products:
     get:
       tags:
       - product-controller
       summary: Find product(s) by name
-      operationId: getProductByNameUsingGET
+      operationId: getAllProducts
       parameters:
-      - name: name
-        in: query
-        description: Match product name containing this value, ignoring case
-        allowEmptyValue: false
-        schema:
-          type: string
       - name: page_number
         in: query
         description: Starts from zero
