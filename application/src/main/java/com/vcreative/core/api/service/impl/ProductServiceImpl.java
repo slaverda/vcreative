@@ -62,7 +62,12 @@ public class ProductServiceImpl implements ProductService {
      * @return a Page of Products
      */
     public ProductPaginatedList getProductByName(final String name, final Pageable pageable) {
-        Page<Product> page = productRepository.findProductByNameContaining(name.toUpperCase(Locale.ROOT), pageable);
+        Page<Product> page = null;
+        if (name != null && !name.isBlank()) {
+            page = productRepository.findProductByNameContaining(name.toUpperCase(Locale.ROOT), pageable);
+        } else {
+            page = productRepository.findAll(pageable);
+        }
 
         PaginatedHeader paginatedHeader = new PaginatedHeader();
         paginatedHeader.setPageNumber(page.getNumber());
