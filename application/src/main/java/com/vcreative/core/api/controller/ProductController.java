@@ -1,8 +1,8 @@
 package com.vcreative.core.api.controller;
 
+import com.sands.vcreative.api.ProductControllerApi;
 import com.sands.vcreative.model.ProductFull;
 import com.sands.vcreative.model.ProductPaginatedList;
-import com.sands.vcreative.api.ProductControllerApi;
 import com.vcreative.core.api.model.exceptions.NotFoundException;
 import com.vcreative.core.api.service.ProductService;
 import com.vcreative.core.api.utils.PageParamsUtils;
@@ -27,6 +27,16 @@ public class ProductController extends BaseController implements ProductControll
     }
 
     @Override
+    @GetMapping(value = "/products")
+    public ResponseEntity<ProductPaginatedList> getAllProducts(@Valid final Integer pageNumber,
+                                                               @Valid final Integer pageSize) {
+        ParameterValidator.validator()
+                .paging(pageNumber, pageSize);
+        return ResponseEntity.ok(productService.getAllProducts(
+                PageParamsUtils.toPageRequest(pageNumber, pageSize)));
+    }
+
+    @Override
     @GetMapping(value = "/product/{id}")
     public ResponseEntity<ProductFull> getProductByIdUsingGET(final String id) {
         assertIdNotBlank(id);
@@ -35,16 +45,5 @@ public class ProductController extends BaseController implements ProductControll
             throw new NotFoundException();
         }
         return ResponseEntity.ok(response.get());
-    }
-
-    @Override
-    @GetMapping(value = "/product")
-    public ResponseEntity<ProductPaginatedList> getProductByNameUsingGET(@Valid final String name,
-                                                                         @Valid final Integer pageNumber,
-                                                                         @Valid final Integer pageSize) {
-        ParameterValidator.validator()
-                .paging(pageNumber, pageSize);
-        return ResponseEntity.ok(productService.getProductByName(name,
-                PageParamsUtils.toPageRequest(pageNumber, pageSize)));
     }
 }

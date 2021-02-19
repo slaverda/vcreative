@@ -22,50 +22,50 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductControllerTest {
-    @Spy
-    @InjectMocks
-    private ProductController productController;
-
-    @Mock
-    private ProductServiceImpl productService;
-
-    @Test
-    @DisplayName("Should return successful response on calling get product by id endpoint")
-    public void productById() {
-        var productId = "some-id";
-        var productResponse = new ProductFull();
-        productResponse.setId(productId);
-
-        when(productService.getProductById(productId)).thenReturn(Optional.of(productResponse));
-
-        var response = productController.getProductByIdUsingGET(productId);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody().getId(), is(productId));
-    }
-
-    @Test
-    @DisplayName("Should return not found response when product not found")
-    public void productByIdNotFound() {
-        var productId = "some-id";
-
-        when(productService.getProductById(productId)).thenReturn(Optional.empty());
-
-        Assertions.assertThrows(NotFoundException.class, () ->
-                productController.getProductByIdUsingGET(productId));
-    }
-
-    @Test
-    @DisplayName("Should throw InvalidParameterException when blank id is provided")
-    public void productByIdInvalidParameter() {
-        Assertions.assertThrows(IllegalArgumentException.class, () ->
-                productController.getProductByIdUsingGET(" "));
-    }
-
-    @Test
-    @DisplayName("Should throw InvalidParameterException if blank name is provided")
-    public void productByNameInvalidParameter() {
-        Assertions.assertThrows(IllegalArgumentException.class, () ->
-                productController.getProductByNameUsingGET(" ", 0, 20));
-    }
+//    @Spy
+//    @InjectMocks
+//    private ProductController productController;
+//
+//    @Mock
+//    private ProductServiceImpl productService;
+//
+//    @Test
+//    @DisplayName("Should return successful response on calling get product by id endpoint")
+//    public void productById() {
+//        var productId = "some-id";
+//        var productResponse = new ProductFull();
+//        productResponse.setId(productId);
+//
+//        when(productService.getProductById(productId)).thenReturn(Optional.of(productResponse));
+//
+//        var response = productController.getProductByIdUsingGET(productId);
+//
+//        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+//        assertThat(response.getBody().getId(), is(productId));
+//    }
+//
+//    @Test
+//    @DisplayName("Should return not found response when product not found")
+//    public void productByIdNotFound() {
+//        var productId = "some-id";
+//
+//        when(productService.getProductById(productId)).thenReturn(Optional.empty());
+//
+//        Assertions.assertThrows(NotFoundException.class, () ->
+//                productController.getProductByIdUsingGET(productId));
+//    }
+//
+//    @Test
+//    @DisplayName("Should throw InvalidParameterException when blank id is provided")
+//    public void productByIdInvalidParameter() {
+//        Assertions.assertThrows(IllegalArgumentException.class, () ->
+//                productController.getProductByIdUsingGET(" "));
+//    }
+//
+//    @Test
+//    @DisplayName("Should throw InvalidParameterException if blank name is provided")
+//    public void productByNameInvalidParameter() {
+//        Assertions.assertThrows(IllegalArgumentException.class, () ->
+//                productController.getProductByNameUsingGET(" ", 0, 20));
+//    }
 }
