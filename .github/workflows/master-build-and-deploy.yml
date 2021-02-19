@@ -42,7 +42,7 @@ jobs:
     - name: Remove old containers and images
       uses: garygrossgarten/github-action-ssh@v0.6.3
       with:
-        command:  docker stop vcreative-core && docker container rm vcreative-core && docker image rm slaveda/vcreative-core
+        command: docker-compose rm vcreative-core -s -f -v
         host: ${{ secrets.SSH_HOST }}
         port: ${{ secrets.SSH_PORT }}
         username: ${{ secrets.SSH_USER }}
