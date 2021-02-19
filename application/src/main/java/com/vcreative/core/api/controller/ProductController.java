@@ -38,6 +38,7 @@ public class ProductController extends BaseController implements ProductControll
     }
 
     @Override
+    @GetMapping(value = "/product")
     public ResponseEntity<ProductPaginatedList> getProductByNameUsingGET(@Valid final String name,
                                                                          @Valid final Integer pageNumber,
                                                                          @Valid final Integer pageSize) {
