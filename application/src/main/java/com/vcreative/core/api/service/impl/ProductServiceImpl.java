@@ -7,7 +7,6 @@ import com.vcreative.core.api.model.Product;
 import com.vcreative.core.api.model.dto.SimplePageRequest;
 import com.vcreative.core.api.repository.ProductRepository;
 import com.vcreative.core.api.service.ProductService;
-import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
