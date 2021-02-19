@@ -1,0 +1,148 @@
+openapi: 3.0.1
+info:
+  title: Vcreative Core API Documentation
+  description: Vcreative Core API documentation
+  version: "0.1"
+
+tags:
+- name: product-controller
+  description: Product Controller
+paths:
+  /api/vcreative/product:
+    get:
+      tags:
+      - product-controller
+      summary: Find product(s) by name
+      operationId: getProductByNameUsingGET
+      parameters:
+      - name: name
+        in: query
+        description: Match product name containing this value, ignoring case
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: page_number
+        in: query
+        description: Starts from zero
+        allowEmptyValue: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+        example: 0
+      - name: page_size
+        in: query
+        description: page_size
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProductPaginatedList'
+        400:
+          description: Bad Request
+          content: {}
+        405:
+          description: Method Not Allowed
+          content: {}
+        500:
+          description: Internal Server Error
+          content: {}
+      deprecated: false
+  /api/vcreative/product/{id}:
+    get:
+      tags:
+      - product-controller
+      summary: Find product by id (known as 'uid' in the database)
+      operationId: getProductByIdUsingGET
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProductFull'
+        400:
+          description: Bad Request
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+        405:
+          description: Method Not Allowed
+          content: {}
+        500:
+          description: Internal Server Error
+          content: {}
+      deprecated: false
+components:
+  schemas:
+    PaginatedHeader:
+      title: PaginatedHeader
+      type: object
+      properties:
+        page_number:
+          type: integer
+          format: int32
+        page_size:
+          type: integer
+          format: int32
+    ProductFull:
+      title: ProductFull
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        sku:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        unit_price:
+          type: number
+          format: double
+        image_url:
+          type: string
+        active:
+          type: number
+          format: byte
+        units_in_stock:
+          type: integer
+          format: int32
+        date_created:
+          type: string
+        last_updated:
+          type: string
+        category_id:
+          type: string
+    ProductPaginatedList:
+      title: ProductPaginatedList
+      type: object
+      properties:
+        page_request:
+          $ref: '#/components/schemas/PaginatedHeader'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductFull'
+        total_pages:
+          type: integer
+          format: int64
+        total_results:
+          type: integer
+          format: int64
+      description: Standardised API response for paginated data.
