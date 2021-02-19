@@ -43,9 +43,7 @@ public class ProductController extends BaseController implements ProductControll
                                                                          @Valid final Integer pageNumber,
                                                                          @Valid final Integer pageSize) {
         ParameterValidator.validator()
-                .broad(name)
-                .paging(pageNumber, pageSize)
-                .validateBroadParametersHavePaging("name");
+                .paging(pageNumber, pageSize);
         return ResponseEntity.ok(productService.getProductByName(name,
                 PageParamsUtils.toPageRequest(pageNumber, pageSize)));
     }
