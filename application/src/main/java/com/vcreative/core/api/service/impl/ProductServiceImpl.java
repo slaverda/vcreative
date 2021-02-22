@@ -1,13 +1,11 @@
 package com.vcreative.core.api.service.impl;
 
-import com.sands.vcreative.model.PaginatedHeader;
 import com.sands.vcreative.model.ProductFull;
 import com.sands.vcreative.model.ProductPaginatedList;
 import com.vcreative.core.api.model.Product;
 import com.vcreative.core.api.model.dto.SimplePageRequest;
 import com.vcreative.core.api.repository.ProductRepository;
 import com.vcreative.core.api.service.ProductService;
-import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public ProductPaginatedList getAllProducts(final SimplePageRequest simplePageRequest) {
-        Page<Product> page = null;
+        Page<Product> page;
         if (simplePageRequest.getPageNumber() == 0 && simplePageRequest.getPageSize() == Integer.MAX_VALUE) {
             page = productRepository.findAll(PageRequest.of(0, 10));
         } else {
@@ -63,14 +61,11 @@ public class ProductServiceImpl implements ProductService {
                                                             simplePageRequest.getPageSize()));
         }
 
-        PaginatedHeader paginatedHeader = new PaginatedHeader();
-        paginatedHeader.setPageNumber(page.getNumber());
-        paginatedHeader.setPageSize(page.getSize());
-
         ProductPaginatedList productPaginatedList = new ProductPaginatedList();
-        productPaginatedList.setPageRequest(paginatedHeader);
         productPaginatedList.setTotalPages(Long.valueOf(page.getTotalPages()));
-        productPaginatedList.setTotalResults(page.getTotalElements());
+        productPaginatedList.setTotalElements(page.getTotalElements());
+        productPaginatedList.setNumber(Long.valueOf(page.getNumber()));
+        productPaginatedList.setSize(Long.valueOf(page.getSize()));
 
         List<ProductFull> productFullList = new ArrayList<>();
 
