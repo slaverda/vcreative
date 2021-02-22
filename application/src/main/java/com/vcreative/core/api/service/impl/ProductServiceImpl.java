@@ -1,5 +1,6 @@
 package com.vcreative.core.api.service.impl;
 
+import com.sands.vcreative.model.PaginatedHeader;
 import com.sands.vcreative.model.ProductFull;
 import com.sands.vcreative.model.ProductPaginatedList;
 import com.vcreative.core.api.model.Product;
@@ -53,7 +54,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public ProductPaginatedList getAllProducts(final SimplePageRequest simplePageRequest) {
-        Page<Product> page;
+        Page<Product> page = null;
         if (simplePageRequest.getPageNumber() == 0 && simplePageRequest.getPageSize() == Integer.MAX_VALUE) {
             page = productRepository.findAll(PageRequest.of(0, 10));
         } else {
@@ -61,11 +62,14 @@ public class ProductServiceImpl implements ProductService {
                                                             simplePageRequest.getPageSize()));
         }
 
+        PaginatedHeader paginatedHeader = new PaginatedHeader();
+        paginatedHeader.setPageNumber(page.getNumber());
+        paginatedHeader.setPageSize(page.getSize());
+        paginatedHeader.setTotalPages(Long.valueOf(page.getTotalPages()));
+        paginatedHeader.setTotalElements(page.getTotalElements());
+
         ProductPaginatedList productPaginatedList = new ProductPaginatedList();
-        productPaginatedList.setTotalPages(Long.valueOf(page.getTotalPages()));
-        productPaginatedList.setTotalElements(page.getTotalElements());
-        productPaginatedList.setNumber(Long.valueOf(page.getNumber()));
-        productPaginatedList.setSize(Long.valueOf(page.getSize()));
+        productPaginatedList.setPage(paginatedHeader);
 
         List<ProductFull> productFullList = new ArrayList<>();
 
@@ -76,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
                     .map(breeder, ProductFull.class)).get());
         }
 
-        productPaginatedList.setResults(productFullList);
+        productPaginatedList.setProducts(productFullList);
 
         return productPaginatedList;
     }

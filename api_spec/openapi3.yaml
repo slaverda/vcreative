@@ -82,6 +82,22 @@ paths:
       deprecated: false
 components:
   schemas:
+    PaginatedHeader:
+      title: PaginatedHeader
+      type: object
+      properties:
+        page_number:
+          type: integer
+          format: int32
+        page_size:
+          type: integer
+          format: int32
+        total_pages:
+          type: integer
+          format: int64
+        total_elements:
+          type: integer
+          format: int64
     ProductFull:
       title: ProductFull
       required:
@@ -117,20 +133,10 @@ components:
       title: ProductPaginatedList
       type: object
       properties:
-        results:
+        page:
+          $ref: '#/components/schemas/PaginatedHeader'
+        products:
           type: array
           items:
             $ref: '#/components/schemas/ProductFull'
-        total_pages:
-          type: integer
-          format: int64
-        total_elements:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        number:
-          type: integer
-          format: int64
       description: Standardised API response for paginated data.
